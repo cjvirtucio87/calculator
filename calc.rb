@@ -11,52 +11,6 @@ module Numbers
     eight: 8,
     nine: 9
   }
-
-  def returnNumber(num)
-    if self.messages.empty?
-      self.memo = NUMBERS[num]
-    else
-      self.memo = self.memo.send(self.messages[0],NUMBERS[num])
-      return self.memo
-    end
-    return self
-  end
-
-  def one
-    returnNumber(:one)
-  end
-  
-  def two
-    returnNumber(:two)
-  end
-  
-  def three
-    returnNumber(:three)
-  end
-  
-  def four
-    returnNumber(:four)
-  end
-  
-  def five
-    returnNumber(:five)
-  end
-  
-  def six
-    returnNumber(:six)
-  end
-  
-  def seven
-    returnNumber(:seven)
-  end
-  
-  def eight
-    returnNumber(:eight)
-  end
-  
-  def nine
-    returnNumber(:nine)
-  end
   
 end
 
@@ -92,6 +46,17 @@ class Calc
     @memo = 0
     @messages = []
   end
+
+  def method_missing(methodName)
+    if self.messages.empty?
+      self.memo = NUMBERS[methodName]
+    else
+      self.memo = self.memo.send(self.messages[0],NUMBERS[methodName])
+      return self.memo
+    end
+    return self
+  end
+
 end
 
 puts Calc.new.one.minus.three

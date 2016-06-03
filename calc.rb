@@ -1,4 +1,4 @@
-module Numbers
+module MathConstants
   
   NUMBERS = {
     one: 1,
@@ -11,36 +11,20 @@ module Numbers
     eight: 8,
     nine: 9
   }
+
+  OPERATORS = {
+    plus: :+,
+    minus: :-,
+    times: :*,
+    divided_by: :/
+  }
   
-end
-
-module Operators
-  def plus
-    self.operator = :+
-    return self
-  end
-
-  def minus
-    self.operator = :-
-    return self
-  end
-
-  def times
-    self.operator = :*
-    return self
-  end
-
-  def divided_by
-    self.operator = :/
-    return self
-  end
 end
 
 class Calc
   attr_accessor :memo, :operator
 
-  include Numbers
-  include Operators
+  include MathConstants
 
   def initialize
     @memo = 0
@@ -49,7 +33,11 @@ class Calc
 
   def method_missing(methodName)
     if @operator.nil?
-      @memo = NUMBERS[methodName]
+      if OPERATORS.keys.any? { |o| o == methodName }
+        @operator = OPERATORS[methodName]
+      else
+        @memo = NUMBERS[methodName]
+      end
     else
       @memo = @memo.send(@operator,NUMBERS[methodName])
       return @memo
@@ -58,5 +46,3 @@ class Calc
   end
 
 end
-
-puts Calc.new.one.minus.three

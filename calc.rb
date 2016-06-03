@@ -16,43 +16,43 @@ end
 
 module Operators
   def plus
-    self.messages.push(:+)
+    self.operator = :+
     return self
   end
 
   def minus
-    self.messages.push(:-)
+    self.operator = :-
     return self
   end
 
   def times
-    self.messages.push(:*)
+    self.operator = :*
     return self
   end
 
   def divided_by
-    self.messages.push(:/)
+    self.operator = :/
     return self
   end
 end
 
 class Calc
-  attr_accessor :memo, :messages
+  attr_accessor :memo, :operator
 
   include Numbers
   include Operators
 
   def initialize
     @memo = 0
-    @messages = []
+    @operator
   end
 
   def method_missing(methodName)
-    if self.messages.empty?
-      self.memo = NUMBERS[methodName]
+    if @operator.nil?
+      @memo = NUMBERS[methodName]
     else
-      self.memo = self.memo.send(self.messages[0],NUMBERS[methodName])
-      return self.memo
+      @memo = @memo.send(@operator,NUMBERS[methodName])
+      return @memo
     end
     return self
   end
